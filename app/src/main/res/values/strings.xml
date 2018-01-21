@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">BranchByAbstraction</string>
+    <string name="app_name">QuotesApp</string>
+    <string name="quotes_none_added_yet">No Quotes added yet</string>
+    <string name="add_quote_content_hint">Content</string>
+    <string name="add_quote_source_hint">Source</string>
+    <string name="add_quote_dialog_title">Add a new Quote</string>
+    <string name="add_quote_dialog_positive">OK</string>
+    <string name="add_quote_dialog_negative">Cancel</string>
+    <string name="add_quote_success_message">Successfully added!</string>
+    <string name="add_quote_empty_error_message">Quote is Empty</string>
 </resources>
