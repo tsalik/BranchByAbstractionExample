@@ -3,6 +3,7 @@ package com.ktsal.branchbyabstraction.ui.app;
 
 import android.app.Application;
 
+import com.ktsal.branchbyabstraction.data.MixedSqlBriteRoomDataSource;
 import com.ktsal.branchbyabstraction.data.QuotesDataSource;
 import com.ktsal.branchbyabstraction.data.QuotesDbHelper;
 import com.ktsal.branchbyabstraction.data.QuotesRepository;
@@ -28,8 +29,9 @@ public class QuotesApplication extends Application implements Injector {
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
         QuotesDbHelper quotesDbHelper = new QuotesDbHelper(this);
         BriteDatabase briteDatabase = sqlBrite.wrapDatabaseHelper(quotesDbHelper, Schedulers.io());
-        QuotesDataSource localDataSource = new SqlBriteQuotesDataSource(briteDatabase);
-        quotesRepository = new QuotesRepositoryProxy(localDataSource);
+        QuotesDataSource sqlBriteLocalDataSource = new SqlBriteQuotesDataSource(briteDatabase);
+        MixedSqlBriteRoomDataSource mixedSqlBriteRoomDataSource = new MixedSqlBriteRoomDataSource(sqlBriteLocalDataSource);
+        quotesRepository = new QuotesRepositoryProxy(mixedSqlBriteRoomDataSource);
     }
 
     @Override
