@@ -18,21 +18,22 @@ private const val SQL_CREATE_ENTRIES =
                 "${QuotesEntry.COLUMN_QUOTE_CONTENT} TEXT, " +
                 "${QuotesEntry.COLUMN_QUOTE_SOURCE} TEXT)"
 
-private const val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${QuotesEntry.TABLE_QUOTES}"
+const val DATABASE_NAME = "Quotes.db"
 
-private const val DATABASE_NAME = "Quotes.db"
+const val DATABASE_VERSION = 2
 
-private const val DATABASE_VERSION = 1
-
-class QuotesDbHelper(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class QuotesDbHelper(context: Context, databaseVersion: Int): SQLiteOpenHelper(context, DATABASE_NAME, null, databaseVersion) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(SQL_CREATE_ENTRIES)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.execSQL(SQL_DELETE_ENTRIES)
-        onCreate(db)
+
+    }
+
+    override fun onDowngrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+
     }
 
 }
