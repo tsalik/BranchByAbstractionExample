@@ -16,15 +16,11 @@ import java.util.List;
 
 import io.reactivex.Observable;
 
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MixedSqlBriteRoomTest {
-
-    @Mock
-    private QuotesDataSource oldImplementation;
 
     @Mock
     private QuotesDataSource newImplementation;
@@ -33,7 +29,7 @@ public class MixedSqlBriteRoomTest {
 
     @Before
     public void setup() {
-        mixedSqlBriteRoomDataSource = new MixedSqlBriteRoomDataSource(oldImplementation, newImplementation);
+        mixedSqlBriteRoomDataSource = new MixedSqlBriteRoomDataSource(newImplementation);
     }
 
     @Test
@@ -44,7 +40,6 @@ public class MixedSqlBriteRoomTest {
         mixedSqlBriteRoomDataSource.getSavedQuotes();
 
         verify(newImplementation).getSavedQuotes();
-        verify(oldImplementation, never()).getSavedQuotes();
     }
 
     @Test
@@ -55,7 +50,6 @@ public class MixedSqlBriteRoomTest {
         mixedSqlBriteRoomDataSource.add(complexityKernighan).test();
 
         verify(newImplementation).add(complexityKernighan);
-        verify(oldImplementation, never()).add(complexityKernighan);
     }
 
 }
