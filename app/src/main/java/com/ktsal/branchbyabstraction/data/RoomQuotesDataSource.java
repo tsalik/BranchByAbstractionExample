@@ -7,6 +7,7 @@ import android.content.Context;
 import com.ktsal.branchbyabstraction.domain.entity.Quote;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -45,8 +46,16 @@ public class RoomQuotesDataSource implements QuotesDataSource {
 
     @Override
     public Observable<Boolean> add(Quote quote) {
-        return null;
+        final QuoteEntity quoteEntity = new QuoteEntity();
+        quoteEntity.quoteContent = quote.getContent();
+        quoteEntity.quoteSource = quote.getSource();
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                roomQuotesDatabase.quotesDao().insertQuote(quoteEntity);
+                return true;
+            }
+        });
     }
-
 
 }

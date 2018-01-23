@@ -12,4 +12,8 @@ class MixedSqlBriteRoomDataSource(private val oldDataSource: QuotesDataSource,
         return newDataSource.savedQuotes
     }
 
+    override fun add(quote: Quote): Observable<Boolean> {
+        return newDataSource.add(quote)
+    }
+
 }

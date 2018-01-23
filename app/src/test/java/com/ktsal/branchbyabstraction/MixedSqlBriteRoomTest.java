@@ -47,4 +47,15 @@ public class MixedSqlBriteRoomTest {
         verify(oldImplementation, never()).getSavedQuotes();
     }
 
+    @Test
+    public void whenAddQuote_thenNewImplementationCalled() {
+        Quote complexityKernighan = new Quote("Controlling complexity is the essence of computer programming", "B.W.Kernighan");
+        when(newImplementation.add(complexityKernighan)).thenReturn(Observable.just(true));
+
+        mixedSqlBriteRoomDataSource.add(complexityKernighan).test();
+
+        verify(newImplementation).add(complexityKernighan);
+        verify(oldImplementation, never()).add(complexityKernighan);
+    }
+
 }

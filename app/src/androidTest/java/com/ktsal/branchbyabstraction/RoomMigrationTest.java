@@ -51,8 +51,8 @@ public class RoomMigrationTest {
 
     @Test
     public void givenDbNotEmpty_whenMigrateToRoom_thenRoomMaintainsQuotes() throws IOException {
-        Quote quote = new Quote("wubba lubba dub dub", "Rick");
-        addTestQuote(briteDatabase, quote);
+        Quote wubbaLubbaDubDub = new Quote("wubba lubba dub dub", "Rick Sanchez");
+        addTestQuote(briteDatabase, wubbaLubbaDubDub);
 
         migrationTestHelper.runMigrationsAndValidate("Quotes.db", 2, true, RoomQuotesDatabase.MIGRATION_1_2);
         roomQuotesDatabase = getMigratedRoomDb();
@@ -64,7 +64,7 @@ public class RoomMigrationTest {
         List<QuoteEntity> quoteEntities = testObserver.values().get(0);
         QuoteEntity quoteEntity = quoteEntities.get(0);
         assertThat(quoteEntity.quoteContent, is(equalTo("wubba lubba dub dub")));
-        assertThat(quoteEntity.quoteSource, is(equalTo("Rick")));
+        assertThat(quoteEntity.quoteSource, is(equalTo("Rick Sanchez")));
     }
 
     @Test
@@ -79,6 +79,50 @@ public class RoomMigrationTest {
         testObserver.assertValueCount(1);
         List<QuoteEntity> quoteEntities = testObserver.values().get(0);
         assertThat(quoteEntities, is(empty()));
+    }
+
+    @Test
+    public void givenDbIsEmpty_whenMigrateToRoomAndInsertData_thenRoomReturnsTheNewEntry() throws IOException {
+        QuoteEntity dontEvenTrip = new QuoteEntity();
+        dontEvenTrip.quoteContent = "don't even trip dawg";
+        dontEvenTrip.quoteSource = "Rick Sanchez";
+
+        migrationTestHelper.runMigrationsAndValidate("Quotes.db", 2, true, RoomQuotesDatabase.MIGRATION_1_2);
+        roomQuotesDatabase = getMigratedRoomDb();
+        roomQuotesDatabase.quotesDao().insertQuote(dontEvenTrip);
+        TestObserver<List<QuoteEntity>> testObserver = roomQuotesDatabase.quotesDao().getSavedQuotes().test();
+
+        testObserver.assertNoErrors();
+        testObserver.assertComplete();
+        testObserver.assertValueCount(1);
+        List<QuoteEntity> quoteEntities = testObserver.values().get(0);
+        QuoteEntity quoteEntity = quoteEntities.get(0);
+        assertThat(quoteEntity.quoteContent, is(equalTo("don't even trip dawg")));
+        assertThat(quoteEntity.quoteSource, is(equalTo("Rick Sanchez")));
+    }
+
+    @Test
+    public void givenDbNotEmpty_whenMigrateToRoomAndInsertData_thenRoomReturnsOldQuotesPlusTheNew() throws IOException {
+        addTestQuote(briteDatabase, new Quote("Weddings are basically funerals with cake", "Rick Sanchez"));
+        QuoteEntity existenceIsPain = new QuoteEntity();
+        existenceIsPain.quoteContent = "Existence is pain";
+        existenceIsPain.quoteSource = "Mr.Meeseeks";
+
+        migrationTestHelper.runMigrationsAndValidate("Quotes.db", 2, true, RoomQuotesDatabase.MIGRATION_1_2);
+        roomQuotesDatabase = getMigratedRoomDb();
+        roomQuotesDatabase.quotesDao().insertQuote(existenceIsPain);
+        TestObserver<List<QuoteEntity>> testObserver = roomQuotesDatabase.quotesDao().getSavedQuotes().test();
+
+        testObserver.assertNoErrors();
+        testObserver.assertComplete();
+        testObserver.assertValueCount(1);
+        List<QuoteEntity> quoteEntities = testObserver.values().get(0);
+        QuoteEntity weddingsAreFunerals = quoteEntities.get(0);
+        assertThat(weddingsAreFunerals.quoteContent, is(equalTo("Weddings are basically funerals with cake")));
+        assertThat(weddingsAreFunerals.quoteSource, is(equalTo("Rick Sanchez")));
+        QuoteEntity existanceIsPainFromDb = quoteEntities.get(1);
+        assertThat(existanceIsPainFromDb.quoteContent, is(equalTo("Existence is pain")));
+        assertThat(existanceIsPainFromDb.quoteSource, is(equalTo("Mr.Meeseeks")));
     }
 
     private RoomQuotesDatabase getMigratedRoomDb() {
