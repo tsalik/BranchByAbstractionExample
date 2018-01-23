@@ -24,7 +24,7 @@ public class AddQuotePresenter {
 
     public void addQuote(String content, String source) {
         Quote quote = new Quote(content, source);
-        if (quote.getNotEmpty()) {
+        if (quote.isNotEmpty()) {
             quotesRepository.add(quote)
                     .subscribeOn(subscribeOnScheduler)
                     .observeOn(observeOnScheduler)

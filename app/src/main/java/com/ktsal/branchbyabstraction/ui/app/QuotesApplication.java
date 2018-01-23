@@ -3,7 +3,6 @@ package com.ktsal.branchbyabstraction.ui.app;
 
 import android.app.Application;
 
-import com.ktsal.branchbyabstraction.data.MixedSqlBriteRoomDataSource;
 import com.ktsal.branchbyabstraction.data.QuotesRepository;
 import com.ktsal.branchbyabstraction.data.QuotesRepositoryProxy;
 import com.ktsal.branchbyabstraction.data.RoomQuotesDataSource;
@@ -21,8 +20,7 @@ public class QuotesApplication extends Application implements Injector {
 
     private void createDataBase() {
         RoomQuotesDataSource roomQuotesDataSource = new RoomQuotesDataSource(this);
-        MixedSqlBriteRoomDataSource mixedSqlBriteRoomDataSource = new MixedSqlBriteRoomDataSource(roomQuotesDataSource);
-        quotesRepository = new QuotesRepositoryProxy(mixedSqlBriteRoomDataSource);
+        quotesRepository = new QuotesRepositoryProxy(roomQuotesDataSource);
     }
 
     @Override

@@ -14,7 +14,6 @@ import com.squareup.sqlbrite2.BriteDatabase;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,6 @@ import io.reactivex.observers.TestObserver;
 import static com.ktsal.branchbyabstraction.SqlBriteTestHelperKt.addTestQuote;
 import static com.ktsal.branchbyabstraction.SqlBriteTestHelperKt.clearTestDb;
 import static com.ktsal.branchbyabstraction.SqlBriteTestHelperKt.createTestDb;
-import static junit.framework.Assert.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
@@ -123,6 +121,11 @@ public class RoomMigrationTest {
         QuoteEntity existanceIsPainFromDb = quoteEntities.get(1);
         assertThat(existanceIsPainFromDb.quoteContent, is(equalTo("Existence is pain")));
         assertThat(existanceIsPainFromDb.quoteSource, is(equalTo("Mr.Meeseeks")));
+    }
+
+    @After
+    public void clearDb() {
+        clearTestDb(briteDatabase);
     }
 
     private RoomQuotesDatabase getMigratedRoomDb() {
