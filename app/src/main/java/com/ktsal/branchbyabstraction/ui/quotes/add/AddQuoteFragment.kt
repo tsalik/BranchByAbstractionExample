@@ -2,6 +2,7 @@ package com.ktsal.branchbyabstraction.ui.quotes.add
 
 import android.app.Dialog
 import android.app.DialogFragment
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -19,6 +20,16 @@ class AddQuoteFragment : DialogFragment(), AddQuoteView {
     private val addQuotePresenter by lazy { AddQuotePresenter(this, quotesRepository, Schedulers.io(), AndroidSchedulers.mainThread()) }
     private val contentEditText by lazy { dialog.findViewById<EditText>(R.id.contentEditText) }
     private val sourceEditText by lazy { dialog.findViewById<EditText>(R.id.sourceEditText) }
+    private lateinit var onQuoteAddedListener: OnQuoteAddedListener
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnQuoteAddedListener) {
+            onQuoteAddedListener = context
+        } else {
+            throw IllegalArgumentException("${context.toString()} must implement OnQuoteAddedListener")
+        }
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = AlertDialog.Builder(activity)
@@ -42,11 +53,18 @@ class AddQuoteFragment : DialogFragment(), AddQuoteView {
 
     override fun success() {
         Toast.makeText(activity, R.string.add_quote_success_message, Toast.LENGTH_SHORT).show()
+        onQuoteAddedListener.onQuoteAdded()
         dismiss()
     }
 
     override fun showEmptyQuoteError() {
         Toast.makeText(activity, R.string.add_quote_empty_error_message, Toast.LENGTH_SHORT).show()
+    }
+
+    interface OnQuoteAddedListener {
+
+        fun onQuoteAdded()
+
     }
 
 }

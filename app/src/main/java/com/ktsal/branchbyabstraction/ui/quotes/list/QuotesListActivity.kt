@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
-class QuotesListActivity : AppCompatActivity(), QuotesView {
+class QuotesListActivity : AppCompatActivity(), QuotesView, AddQuoteFragment.OnQuoteAddedListener {
 
     private val quotesRepository by lazy { (applicationContext as QuotesApplication).injectQuotesRepository() }
     private val quotesPresenter by lazy { QuotesPresenter(this, quotesRepository, Schedulers.io(), AndroidSchedulers.mainThread()) }
@@ -38,6 +38,10 @@ class QuotesListActivity : AppCompatActivity(), QuotesView {
     override fun showAddQuote() {
         val addQuoteFragment = AddQuoteFragment()
         addQuoteFragment.show(fragmentManager, "addQuoteFragment")
+    }
+
+    override fun onQuoteAdded() {
+        quotesPresenter.getQuotes()
     }
 
 }
