@@ -1,10 +1,10 @@
 package com.ktsal.branchbyabstraction.ui.quotes.list
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
 import com.ktsal.branchbyabstraction.R
@@ -26,7 +26,8 @@ class QuotesListActivity : AppCompatActivity(), QuotesView, AddQuoteFragment.OnQ
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         quotesRecyclerView.adapter = quotesAdapter
-        quotesRecyclerView.layoutManager = LinearLayoutManager(this)
+        quotesRecyclerView.layoutManager =
+            LinearLayoutManager(this)
         addQuoteFab.setOnClickListener { quotesPresenter.addQuote() }
         quotesPresenter.getQuotes()
     }

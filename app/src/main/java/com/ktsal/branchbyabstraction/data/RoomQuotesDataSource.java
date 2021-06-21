@@ -1,7 +1,7 @@
 package com.ktsal.branchbyabstraction.data;
 
 
-import android.arch.persistence.room.Room;
+import androidx.room.Room;
 import android.content.Context;
 
 import com.ktsal.branchbyabstraction.domain.entity.Quote;

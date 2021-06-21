@@ -1,11 +1,11 @@
 package com.ktsal.branchbyabstraction.data;
 
 
-import android.arch.persistence.db.SupportSQLiteDatabase;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.migration.Migration;
-import android.support.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+import androidx.room.migration.Migration;
+import androidx.annotation.NonNull;
 
 
 @Database(entities = {QuoteEntity.class}, version = QuotesDbHelperKt.DATABASE_VERSION)

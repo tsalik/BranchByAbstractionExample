@@ -8,7 +8,7 @@
     android:padding="8dp"
     tools:context="com.ktsal.branchbyabstraction.ui.quotes.list.QuotesListActivity">
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/quotesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -26,7 +26,7 @@
         android:text="@string/quotes_none_added_yet"
         android:visibility="gone" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addQuoteFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

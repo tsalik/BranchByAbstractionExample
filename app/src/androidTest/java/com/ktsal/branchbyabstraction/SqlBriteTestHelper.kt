@@ -1,7 +1,7 @@
 package com.ktsal.branchbyabstraction
 
 import android.content.ContentValues
-import android.support.test.InstrumentationRegistry
+import androidx.test.platform.app.InstrumentationRegistry
 import com.ktsal.branchbyabstraction.data.QuotesDbHelper
 import com.ktsal.branchbyabstraction.data.QuotesEntry
 import com.ktsal.branchbyabstraction.domain.entity.Quote
@@ -12,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 
 fun createTestDb(databaseVersion: Int): BriteDatabase {
     val sqlBrite = SqlBrite.Builder().build()
-    val quotesDbHelper = QuotesDbHelper(InstrumentationRegistry.getTargetContext().applicationContext, databaseVersion)
+    val quotesDbHelper = QuotesDbHelper(InstrumentationRegistry.getInstrumentation().targetContext.applicationContext, databaseVersion)
     return sqlBrite.wrapDatabaseHelper(quotesDbHelper, AndroidSchedulers.mainThread())
 }
 

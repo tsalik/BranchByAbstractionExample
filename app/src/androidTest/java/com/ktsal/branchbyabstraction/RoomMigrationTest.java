@@ -1,11 +1,11 @@
 package com.ktsal.branchbyabstraction;
 
-import android.arch.persistence.db.framework.FrameworkSQLiteOpenHelperFactory;
-import android.arch.persistence.room.Room;
-import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.testing.MigrationTestHelper;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.room.testing.MigrationTestHelper;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.ktsal.branchbyabstraction.data.QuoteEntity;
 import com.ktsal.branchbyabstraction.data.RoomQuotesDatabase;
@@ -129,7 +129,7 @@ public class RoomMigrationTest {
     }
 
     private RoomQuotesDatabase getMigratedRoomDb() {
-        RoomQuotesDatabase roomDb = Room.databaseBuilder(InstrumentationRegistry.getTargetContext(), RoomQuotesDatabase.class, "Quotes.db")
+        RoomQuotesDatabase roomDb = Room.databaseBuilder(InstrumentationRegistry.getInstrumentation().getTargetContext(), RoomQuotesDatabase.class, "Quotes.db")
                 .addMigrations()
                 .build();
         migrationTestHelper.closeWhenFinished(roomDb);
