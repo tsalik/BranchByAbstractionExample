@@ -1,21 +1,26 @@
 package com.ktsal.branchbyabstraction.ui.quotes.list
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.widget.TextView
 import com.ktsal.branchbyabstraction.R
 import com.ktsal.branchbyabstraction.ui.app.QuotesApplication
 import com.ktsal.branchbyabstraction.ui.quotes.add.AddQuoteFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_main.*
 
 class QuotesListActivity : AppCompatActivity(), QuotesView, AddQuoteFragment.OnQuoteAddedListener {
 
     private val quotesRepository by lazy { (applicationContext as QuotesApplication).injectQuotesRepository() }
     private val quotesPresenter by lazy { QuotesPresenter(this, quotesRepository, Schedulers.io(), AndroidSchedulers.mainThread()) }
     private val quotesAdapter = QuotesAdapter()
+    private val quotesRecyclerView: RecyclerView by lazy { findViewById(R.id.quotesRecyclerView) }
+    private val addQuoteFab: FloatingActionButton by lazy { findViewById(R.id.addQuoteFab) }
+    private val noQuotesMessage: TextView by lazy { findViewById(R.id.noQuotesMessage) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
